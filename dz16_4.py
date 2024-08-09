@@ -4,26 +4,26 @@ from typing import List
 
 app = FastAPI()
 
-users = {'1': 'Имя: Example, возраст: 18'}
+users = ['1', 'Имя: Example, возраст: 18']
 
-class Message(BaseModel):
+class User(BaseModel):
     age: int = None
     text: str
     id: int = None
 
 @app.get('/')
-def get_all_messages() -> List[Message]:
+def get_all_messages() -> List[User]:
     return users
 
 @app.get(path = "/user/{user_id}")
-def get_message(user_id: int) -> Message:
+def get_message(user_id: int) -> User:
     try:
         return users[user_id]
     except IndexError:
         raise HTTPException(status_code=404, detail='User was not found')
 
 @app.post('/user')
-def create_message(user: Message) -> str:
+def create_message(user: User) -> str:
     user.id = len(users)
     users.append(user)
     return f'message created'
@@ -49,5 +49,8 @@ def delete_message(user_id: int) -> str:
 def kill_messages_all() -> str:
     users.clear()
     return 'All Messages deleted'
+
+
+
 
 
