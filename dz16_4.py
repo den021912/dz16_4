@@ -8,7 +8,7 @@ users = []
 
 class User(BaseModel):
     age: int
-    text: str
+    username: str
     id: int
 
 @app.get('/')
