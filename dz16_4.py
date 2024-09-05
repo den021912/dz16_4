@@ -4,12 +4,12 @@ from typing import List
 
 app = FastAPI()
 
-users = ['1', 'Имя: Example, возраст: 18']
+users = []
 
 class User(BaseModel):
-    age: int = None
+    age: int
     text: str
-    id: int = None
+    id: int
 
 @app.get('/')
 async def get_all_user() -> List[User]:
@@ -23,12 +23,12 @@ async def get_user(user_id: int) -> User:
         raise HTTPException(status_code=404, detail='User was not found')
 
 @app.post('/user/{username}/{age}')
-async def create_user(user: User, username: str, age: int) -> User:
+async def create_user(username: str, age: int) -> User:
     user_id = max(users, key=lambda x: int(x.id)).id + 1 if users else 1
     user = User(id=user_id, username=username, age=age)
     users.append(user)
     return user
-    
+
 
 @app.put("/user/{user_id}/{username}/{age}")
 async def update_user(user_id: int, username: str, age: int) -> User:
@@ -51,6 +51,6 @@ async def delete_user(user_id: int) -> str:
 @app.delete("/")
 async def kill_user_all() -> str:
     users.clear()
-    return 'All Messages deleted'
+    return 'All deleted'
 
 
